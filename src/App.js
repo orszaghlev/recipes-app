@@ -36,9 +36,9 @@ function App() {
         </nav>
         <Routes>
           <Route path="/uj-recept" element={<RecipeCreate />} />
-          <Route path="/recept-szerkesztes/:recipeSlug"
+          <Route path="/recept-szerkesztes/:id"
             element={<RecipeEdit />} />
-          <Route path="/recept/:recipeSlug" element={<RecipeSingle />} />
+          <Route path="/recept/:id" element={<RecipeSingle />} />
           <Route path="/receptek" element={<RecipeList />} />
           <Route path="/" element={<Home />} />
         </Routes>

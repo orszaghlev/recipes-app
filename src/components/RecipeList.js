@@ -11,11 +11,7 @@ export default function RecipeList() {
 
   async function deleteRecipe(id) {
     const recipeDocRef = doc(db, 'recipes', id)
-    try {
-      await deleteDoc(recipeDocRef)
-    } catch (err) {
-      alert(err)
-    }
+    await deleteDoc(recipeDocRef)
   }
 
   return (
@@ -30,8 +26,8 @@ export default function RecipeList() {
               <button data-testid="recipe-edit-button"
                 className="recipe-edit-button"
                 onClick={() =>
-                  navigate(`/recept-szerkesztes/${recipe.slug}`,
-                    { state: { slug: recipe.slug } })}>
+                  navigate(`/recept-szerkesztes/${recipe.id}`,
+                    { state: { id: recipe.id } })}>
                 <FontAwesomeIcon icon={faPen} />
               </button>
               <button data-testid="recipe-delete-button"
@@ -41,8 +37,8 @@ export default function RecipeList() {
               </button>
               <button data-testid="recipe-read-button"
                 className="recipe-read-button"
-                onClick={() => navigate(`/recept/${recipe.slug}`,
-                  { state: { slug: recipe.slug } })}>
+                onClick={() => navigate(`/recept/${recipe.id}`,
+                  { state: { id: recipe.id } })}>
                 <FontAwesomeIcon icon={faEye} />
               </button>
             </div>

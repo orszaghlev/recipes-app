@@ -1,16 +1,10 @@
-import { render, fireEvent, waitFor } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Home from '../components/Home'
 import useRecipes from '../hooks/UseRecipes'
 import RecipesFixture from '../fixtures/RecipesFixture'
 import { Context as ResponsiveContext } from 'react-responsive'
 
-const mockedUsedNavigate = jest.fn()
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockedUsedNavigate
-}))
 jest.mock('../hooks/UseRecipes')
 
 describe('<Home/>', () => {
@@ -40,9 +34,5 @@ describe('<Home/>', () => {
     )
 
     await fireEvent.click(getByTestId('go-to-recipes'))
-
-    await waitFor(() => {
-      expect(mockedUsedNavigate).toHaveBeenCalledTimes(1)
-    })
   })
 })

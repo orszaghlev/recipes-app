@@ -15,6 +15,8 @@
     "react-responsive": "^9.0.0-beta.10",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "react-slugify": "^2.1.0",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -39,7 +41,8 @@
       "!<rootDir>/src/images/*.jpg",
       "!<rootDir>/src/images/*.png",
       "!<rootDir>/src/data/*.json",
-      "!<rootDir>/src/hooks/*.js"
+      "!<rootDir>/src/hooks/*.js",
+      "!<rootDir>/src/lib/*.js"
     ],
     "coverageThreshold": {
       "global": {

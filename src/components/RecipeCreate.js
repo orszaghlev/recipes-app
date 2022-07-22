@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom"
 import { useMediaQuery } from "react-responsive"
 import { doc, setDoc } from "firebase/firestore"
 import { db } from "../lib/Firebase"
+import { v4 as uuidv4 } from 'uuid'
+import slugify from 'react-slugify'
 
 export default function RecipeCreate() {
-  const id = generateQuickGUID()
+  const id = uuidv4()
   const navigate = useNavigate()
   const [name, setName] = useState("")
   const [ingredients, setIngredients] = useState([{
@@ -23,30 +25,17 @@ export default function RecipeCreate() {
   const [imageURL, setImageURL] = useState("")
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 })
 
-  function generateQuickGUID() {
-    return Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15)
-  }
-
-  function convertToSlug(name) {
-    return name.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-')
-  }
-
   async function createRecipe(event) {
     event.preventDefault()
-    try {
-      await setDoc(doc(db, 'recipes', id), {
-        id: id,
-        name: name,
-        slug: convertToSlug(name),
-        ingredients: ingredients,
-        steps: steps,
-        imageURL: imageURL
-      })
-      navigate("/receptek")
-    } catch (err) {
-      alert(err)
-    }
+    await setDoc(doc(db, 'recipes', id), {
+      id: id,
+      name: name,
+      slug: slugify(name),
+      ingredients: ingredients,
+      steps: steps,
+      imageURL: imageURL
+    })
+    navigate("/receptek")
   }
 
   return (
@@ -63,8 +52,8 @@ export default function RecipeCreate() {
           <input data-testid="recipe-name" style={{ marginTop: "10px" }}
             className={isTabletOrMobile ? "input-name-mobile"
               : "input-name"} type="text" id="name" name="name"
-            value={name} onChange={(e) => {
-              setName(e.target.value);
+            value={name} onChange={(event) => {
+              setName(event.target.value);
             }} />
         </div>
         <div key="input-row-ingredients" className="input-row">
@@ -211,15 +200,15 @@ export default function RecipeCreate() {
                 })
               }}><FontAwesomeIcon icon={faPlus} /></button>
         </div>
-        <div key="input-row-img-url" className="input-row">
+        <div key="input-row-imageURL" className="input-row">
           <label>Kép:</label>
           <input
-            data-testid="recipe-img-url" style={{ marginTop: "10px" }}
+            data-testid="recipe-imageURL" style={{ marginTop: "10px" }}
             className={isTabletOrMobile ? "input-name-mobile"
-              : "input-name"} type="text" id="img-url"
-            name="img-url"
-            value={imageURL} onChange={(e) => {
-              setImageURL(e.target.value);
+              : "input-name"} type="text" id="imageURL"
+            name="imageURL"
+            value={imageURL} onChange={(event) => {
+              setImageURL(event.target.value);
             }} />
         </div>
         <button className={isTabletOrMobile ? "check-button-mobile"
