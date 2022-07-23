@@ -38,11 +38,13 @@
       "!<rootDir>/src/reportWebVitals.js",
       "!<rootDir>/src/setupTests.js",
       "!<rootDir>/src/fixtures/*.js",
-      "!<rootDir>/src/images/*.jpg",
-      "!<rootDir>/src/images/*.png",
+      "!<rootDir>/src/data/images/*.jpg",
+      "!<rootDir>/src/data/images/*.png",
       "!<rootDir>/src/data/*.json",
       "!<rootDir>/src/hooks/*.js",
-      "!<rootDir>/src/lib/*.js"
+      "!<rootDir>/src/lib/*.js",
+      "!<rootDir>/src/constants/*.js",
+      "!<rootDir>/src/contexts/*.js"
     ],
     "coverageThreshold": {
       "global": {

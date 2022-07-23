@@ -216,7 +216,8 @@ li {
 
 .recipe-edit-button,
 .recipe-delete-button,
-.recipe-read-button {
+.recipe-read-button,
+.recipe-move-button {
   width: 30px;
   height: 30px;
   background-color: transparent;
@@ -224,11 +225,16 @@ li {
   cursor: pointer;
 }
 
+.recipe-move-button {
+  color: green;
+  border: 1px solid green;
+  margin-right: 5px;
+}
+
 .recipe-edit-button {
   color: orange;
   border: 1px solid orange;
   margin-right: 5px;
-  margin-left: 20px;
 }
 
 .recipe-delete-button {

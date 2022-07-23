@@ -8,6 +8,7 @@ import { doc, setDoc } from "firebase/firestore"
 import { db } from "../lib/Firebase"
 import { v4 as uuidv4 } from 'uuid'
 import slugify from 'react-slugify'
+import * as ROUTES from '../constants/Routes'
 
 export default function RecipeCreate() {
   const id = uuidv4()
@@ -27,7 +28,7 @@ export default function RecipeCreate() {
 
   async function createRecipe(event) {
     event.preventDefault()
-    await setDoc(doc(db, 'recipes', id), {
+    await setDoc(doc(db, 'backlog', id), {
       id: id,
       name: name,
       slug: slugify(name),
@@ -35,7 +36,7 @@ export default function RecipeCreate() {
       steps: steps,
       imageURL: imageURL
     })
-    navigate("/receptek")
+    navigate(ROUTES.RECIPE_LIST)
   }
 
   return (
