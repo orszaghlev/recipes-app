@@ -1,17 +1,23 @@
-import { useEffect, useState } from 'react'
-import { collection, query, orderBy, onSnapshot }
-  from "firebase/firestore"
-import { db } from '../lib/Firebase'
+import { useEffect, useState, useContext } from "react"
+import FirebaseContext from "../contexts/FirebaseContext"
 
-export default function useRecipes() {
+export default function useRecipes(target) {
   const [recipes, setRecipes] = useState([])
+  const { firebase } = useContext(FirebaseContext)
 
   useEffect(() => {
-    const q = query(collection(db, 'recipes'), orderBy('slug', 'asc'))
-    onSnapshot(q, (querySnapshot) => {
-      setRecipes(querySnapshot.docs.map(doc => doc.data()))
-    })
-  }, [])
+    firebase.firestore().collection(target).orderBy("slug", "asc").get()
+      .then((snapshot) => {
+        const allContent = snapshot.docs.map((contentObj) => ({
+          ...contentObj.data(),
+          docId: contentObj.id,
+        }))
+        setRecipes(allContent)
+      })
+      .catch((error) => {
+        console.log(error.message)
+      })
+  }, [firebase, target])
 
   return { recipes }
 }

@@ -1,16 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faPlus, faCheckCircle } from
   '@fortawesome/free-solid-svg-icons'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMediaQuery } from "react-responsive"
-import { doc, setDoc } from "firebase/firestore"
-import { db } from "../lib/Firebase"
 import { v4 as uuidv4 } from 'uuid'
+import FirebaseContext from '../contexts/FirebaseContext'
+import { useContext } from 'react'
 import slugify from 'react-slugify'
 import * as ROUTES from '../constants/Routes'
 
 export default function RecipeCreate() {
+  const { firebase } = useContext(FirebaseContext)
   const id = uuidv4()
   const navigate = useNavigate()
   const [name, setName] = useState("")
@@ -28,16 +29,21 @@ export default function RecipeCreate() {
 
   async function createRecipe(event) {
     event.preventDefault()
-    await setDoc(doc(db, 'backlog', id), {
+    const data = {
       id: id,
       name: name,
       slug: slugify(name),
       ingredients: ingredients,
       steps: steps,
       imageURL: imageURL
-    })
+    }
+    await firebase.firestore().collection('backlog').doc(data.id).set(data)
     navigate(ROUTES.RECIPE_LIST)
   }
+
+  useEffect(() => {
+    document.title = "Új recept"
+  })
 
   return (
     <div key={isTabletOrMobile ? "recipe-create-container-mobile"
@@ -54,7 +60,7 @@ export default function RecipeCreate() {
             className={isTabletOrMobile ? "input-name-mobile"
               : "input-name"} type="text" id="name" name="name"
             value={name} onChange={(event) => {
-              setName(event.target.value);
+              setName(event.target.value)
             }} />
         </div>
         <div key="input-row-ingredients" className="input-row">
@@ -209,7 +215,7 @@ export default function RecipeCreate() {
               : "input-name"} type="text" id="imageURL"
             name="imageURL"
             value={imageURL} onChange={(event) => {
-              setImageURL(event.target.value);
+              setImageURL(event.target.value)
             }} />
         </div>
         <button className={isTabletOrMobile ? "check-button-mobile"

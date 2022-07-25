@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import RecipeList from '../components/RecipeList'
 import useRecipes from '../hooks/UseRecipes'
 import RecipesFixture from '../fixtures/RecipesFixture'
+import FirebaseContext from '../contexts/FirebaseContext'
 
 const mockedUsedNavigate = jest.fn()
 
@@ -18,11 +19,18 @@ describe('<RecipeList/>', () => {
   })
 
   it('Megjelenik a receptek listája, törlünk', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+      }))
+    };
+
     useRecipes.mockImplementation(() => ({ recipes: RecipesFixture }))
 
     const { getByTestId } = render(
       <Router>
-        <RecipeList />
+        <FirebaseContext.Provider value={firebase}>
+          <RecipeList />
+        </FirebaseContext.Provider>
       </Router>
     )
 
@@ -30,11 +38,18 @@ describe('<RecipeList/>', () => {
   })
 
   it('Megjelenik a receptek listája, szerkesztünk', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+      }))
+    };
+
     useRecipes.mockImplementation(() => ({ recipes: RecipesFixture }))
 
     const { getByTestId } = render(
       <Router>
-        <RecipeList />
+        <FirebaseContext.Provider value={firebase}>
+          <RecipeList />
+        </FirebaseContext.Provider>
       </Router>
     )
 
@@ -46,11 +61,18 @@ describe('<RecipeList/>', () => {
   })
 
   it('Megjelenik a receptek listája, olvasunk', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+      }))
+    };
+
     useRecipes.mockImplementation(() => ({ recipes: RecipesFixture }))
 
     const { getByTestId } = render(
       <Router>
-        <RecipeList />
+        <FirebaseContext.Provider value={firebase}>
+          <RecipeList />
+        </FirebaseContext.Provider>
       </Router>
     )
 

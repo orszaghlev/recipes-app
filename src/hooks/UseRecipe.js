@@ -1,23 +1,34 @@
-import { useEffect, useState } from 'react'
-import { doc, getDoc } from "firebase/firestore"
-import { db } from '../lib/Firebase'
+import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { firebase } from '../lib/Firebase'
 
-export default function useRecipe() {
+export default function useRecipe(target) {
   const [recipe, setRecipe] = useState()
   const location = useLocation()
 
   useEffect(() => {
-    async function getData() {
-      const docRef = doc(db, "recipes", location.state.id)
-      const docSnap = await getDoc(docRef)
+    async function getRecipeById(id) {
+      const result = await firebase
+        .firestore()
+        .collection(target)
+        .where('id', '==', id)
+        .get()
 
-      if (docSnap.exists()) {
-        setRecipe(docSnap.data())
-      }
+      return result.docs.map((item) => ({
+        ...item.data(),
+        docId: item.id
+      }))
     }
-    getData()
-  }, [location.state.id])
+
+    async function getRecipeObjById(id) {
+      const [recipe] = await getRecipeById(id)
+      setRecipe(recipe || {})
+    }
+
+    if (location.state.id) {
+      getRecipeObjById(location.state.id)
+    }
+  }, [location.state.id, target])
 
   return { recipe }
 }

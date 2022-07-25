@@ -1,12 +1,19 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { useMediaQuery } from "react-responsive"
+import { useEffect } from 'react'
 import useRecipe from '../hooks/UseRecipe'
 import Spinner from './Spinner'
 
-export default function RecipeSingle() {
-  const { recipe } = useRecipe()
+export default function RecipeSingle({ target }) {
+  const { recipe } = useRecipe(target)
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 })
+
+  useEffect(() => {
+    if (typeof recipe !== "undefined") {
+      document.title = recipe.name
+    }
+  })
 
   return (
     <div className="single-recipe-container">

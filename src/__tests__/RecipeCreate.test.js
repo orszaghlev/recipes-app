@@ -1,6 +1,7 @@
 import { render, fireEvent, waitFor } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import RecipeCreate from '../components/RecipeCreate'
+import FirebaseContext from '../contexts/FirebaseContext'
 import { Context as ResponsiveContext } from 'react-responsive'
 
 const mockedNavigator = jest.fn()
@@ -16,19 +17,45 @@ describe('<RecipeCreate/>', () => {
   })
 
   it('Megjelenik az űrlap mobilon', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+          doc: jest.fn().mockReturnThis(),
+          set: jest.fn(() => Promise.resolve('Bejegyzés létrehozva'))
+        }))
+      })),
+      auth: jest.fn(() => ({
+      }))
+    };
+
     render(
       <Router>
-        <ResponsiveContext.Provider value={{ width: 300 }}>
-          <RecipeCreate />
-        </ResponsiveContext.Provider>
+        <FirebaseContext.Provider value={{ firebase }}>
+          <ResponsiveContext.Provider value={{ width: 300 }}>
+            <RecipeCreate />
+          </ResponsiveContext.Provider>
+        </FirebaseContext.Provider>
       </Router>
     )
   })
 
   it('Kitölthető az űrlap', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+          doc: jest.fn().mockReturnThis(),
+          set: jest.fn(() => Promise.resolve('Bejegyzés létrehozva'))
+        }))
+      })),
+      auth: jest.fn(() => ({
+      }))
+    };
+
     const { getByTestId, findByTestId } = render(
       <Router>
-        <RecipeCreate />
+        <FirebaseContext.Provider value={{ firebase }}>
+          <RecipeCreate />
+        </FirebaseContext.Provider>
       </Router>
     )
 

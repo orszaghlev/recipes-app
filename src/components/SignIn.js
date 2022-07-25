@@ -1,28 +1,39 @@
-import { useState } from "react"
-import { useUserAuth } from "../contexts/UserContext"
+import { useState, useContext, useEffect } from "react"
 import { useMediaQuery } from "react-responsive"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from "react-router-dom"
+import FirebaseContext from "../contexts/FirebaseContext"
+import * as ROUTES from "../constants/Routes"
 
 export default function SignIn() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const { signInUser } = useUserAuth()
+  const { firebase } = useContext(FirebaseContext)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 })
 
   async function handleSubmit(event) {
     event.preventDefault()
-    setError("")
-    try {
-      await signInUser(email, password)
-    } catch {
-      setError("Sikertelen bejelentkezés!")
-      setTimeout(() => {
-        setError("")
-      }, 5000)
-    }
+    firebase.auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        navigate(ROUTES.BACKLOG_LIST)
+      })
+      .catch(() => {
+        setEmail('')
+        setPassword('')
+        setError("Sikertelen bejelentkezés!")
+        setTimeout(() => {
+          setError("")
+        }, 5000)
+      })
   }
+
+  useEffect(() => {
+    document.title = "Bejelentkezés"
+  })
 
   return (
     <div key={isTabletOrMobile ? "recipe-create-container-mobile"
@@ -39,7 +50,7 @@ export default function SignIn() {
             className={isTabletOrMobile ? "input-name-mobile"
               : "input-name"} type="text" id="name" name="name"
             value={email} onChange={(event) => {
-              setEmail(event.target.value);
+              setEmail(event.target.value)
             }} />
         </div>
         <div key="input-row-name" className="input-row">
@@ -48,7 +59,7 @@ export default function SignIn() {
             className={isTabletOrMobile ? "input-name-mobile"
               : "input-name"} type="password" id="name" name="name"
             value={password} autoComplete="off" onChange={(event) => {
-              setPassword(event.target.value);
+              setPassword(event.target.value)
             }} />
         </div>
         <button className={isTabletOrMobile ? "check-button-mobile"

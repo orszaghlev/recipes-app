@@ -1,17 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faPlus, faCheckCircle } from
   '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMediaQuery } from "react-responsive"
-import { doc, updateDoc } from "firebase/firestore"
-import { db } from "../lib/Firebase"
+import FirebaseContext from '../contexts/FirebaseContext'
 import useRecipe from "../hooks/UseRecipe"
 import Spinner from './Spinner'
 import slugify from 'react-slugify'
+import * as ROUTES from "../constants/Routes"
 
-export default function RecipeEdit() {
-  const { recipe } = useRecipe()
+export default function RecipeEdit({ target }) {
+  const { firebase } = useContext(FirebaseContext)
+  const { recipe } = useRecipe(target)
   const [ingredients, setIngredients] = useState()
   const [steps, setSteps] = useState()
   const navigate = useNavigate()
@@ -19,22 +20,23 @@ export default function RecipeEdit() {
 
   async function editRecipe(event) {
     event.preventDefault()
-    const recipeDocRef = doc(db, 'recipes', recipe.id)
-    await updateDoc(recipeDocRef, {
+    const data = {
       id: recipe.id,
       name: event.target.elements.name.value,
       slug: slugify(event.target.elements.name.value),
       ingredients: ingredients,
       steps: steps,
       imageURL: event.target.elements.imageURL.value
-    })
-    navigate("/receptek")
+    }
+    await firebase.firestore().collection(target).doc(data.id).set(data)
+    navigate(ROUTES.RECIPE_LIST)
   }
 
   useEffect(() => {
     if (typeof recipe !== "undefined") {
       setIngredients(recipe.ingredients)
       setSteps(recipe.steps)
+      document.title = `${recipe.name} szerkesztése`
     }
   }, [recipe])
 
