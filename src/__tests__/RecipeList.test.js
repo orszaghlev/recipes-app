@@ -1,9 +1,10 @@
-import { render, fireEvent, waitFor } from '@testing-library/react'
+import { render, fireEvent, waitFor, act } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import RecipeList from '../components/RecipeList'
 import useRecipes from '../hooks/UseRecipes'
 import RecipesFixture from '../fixtures/RecipesFixture'
 import FirebaseContext from '../contexts/FirebaseContext'
+import AdminContext from "../contexts/AdminContext"
 
 const mockedUsedNavigate = jest.fn()
 
@@ -18,23 +19,99 @@ describe('<RecipeList/>', () => {
     jest.clearAllMocks()
   })
 
+  it('Megjelenik a várólista, törlünk', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+          doc: jest.fn(() => ({
+            delete: jest.fn(() => Promise.resolve('Recept törölve'))
+          }))
+        }))
+      }))
+    }
+    const admin = {
+      uid: process.env.REACT_APP_FIREBASE_ADMIN_UID,
+      displayName: 'admin'
+    }
+
+    useRecipes.mockImplementation(() => ({ recipes: RecipesFixture }))
+
+    const { getByTestId, findByTestId } = render(
+      <Router>
+        <FirebaseContext.Provider value={firebase}>
+          <AdminContext.Provider value={admin}>
+            <RecipeList target="backlog" admin={admin} />
+          </AdminContext.Provider>
+        </FirebaseContext.Provider>
+      </Router>
+    )
+
+    await act(async () => {
+      fireEvent.click(getByTestId('recipe-delete-button'))
+      fireEvent.click(await findByTestId('delete-recipe-delete-button'))
+    });
+  })
+
   it('Megjelenik a receptek listája, törlünk', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+          doc: jest.fn(() => ({
+            delete: jest.fn(() => Promise.resolve('Recept törölve'))
+          }))
+        }))
+      }))
+    }
+    const admin = {
+      uid: process.env.REACT_APP_FIREBASE_ADMIN_UID,
+      displayName: 'admin'
+    }
+
+    useRecipes.mockImplementation(() => ({ recipes: RecipesFixture }))
+
+    const { getByTestId, findByTestId } = render(
+      <Router>
+        <FirebaseContext.Provider value={firebase}>
+          <AdminContext.Provider value={admin}>
+            <RecipeList target="recipes" admin={admin} />
+          </AdminContext.Provider>
+        </FirebaseContext.Provider>
+      </Router>
+    )
+
+    await act(async () => {
+      fireEvent.click(getByTestId('recipe-delete-button'))
+      fireEvent.click(await findByTestId('delete-recipe-delete-button'))
+    });
+  })
+
+  it('Megjelenik a várólista, szerkesztünk', async () => {
     const firebase = {
       firestore: jest.fn(() => ({
       }))
     };
+    const admin = {
+      uid: process.env.REACT_APP_FIREBASE_ADMIN_UID,
+      displayName: 'admin'
+    }
 
     useRecipes.mockImplementation(() => ({ recipes: RecipesFixture }))
 
     const { getByTestId } = render(
       <Router>
         <FirebaseContext.Provider value={firebase}>
-          <RecipeList />
+          <AdminContext.Provider value={admin}>
+            <RecipeList target="backlog" admin={admin} />
+          </AdminContext.Provider>
         </FirebaseContext.Provider>
       </Router>
     )
 
-    await fireEvent.click(getByTestId('recipe-delete-button'))
+    await fireEvent.click(getByTestId('recipe-edit-button'))
+
+    await waitFor(() => {
+      //expect(mockedUsedNavigate).toHaveBeenCalledTimes(1)
+    })
   })
 
   it('Megjelenik a receptek listája, szerkesztünk', async () => {
@@ -42,18 +119,47 @@ describe('<RecipeList/>', () => {
       firestore: jest.fn(() => ({
       }))
     };
+    const admin = {
+      uid: process.env.REACT_APP_FIREBASE_ADMIN_UID,
+      displayName: 'admin'
+    }
 
     useRecipes.mockImplementation(() => ({ recipes: RecipesFixture }))
 
     const { getByTestId } = render(
       <Router>
         <FirebaseContext.Provider value={firebase}>
-          <RecipeList />
+          <AdminContext.Provider value={admin}>
+            <RecipeList target="recipes" admin={admin} />
+          </AdminContext.Provider>
         </FirebaseContext.Provider>
       </Router>
     )
 
     await fireEvent.click(getByTestId('recipe-edit-button'))
+
+    await waitFor(() => {
+      //expect(mockedUsedNavigate).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  it('Megjelenik a várólista, olvasunk', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+      }))
+    };
+
+    useRecipes.mockImplementation(() => ({ recipes: RecipesFixture }))
+
+    const { getByTestId } = render(
+      <Router>
+        <FirebaseContext.Provider value={firebase}>
+          <RecipeList target="backlog" />
+        </FirebaseContext.Provider>
+      </Router>
+    )
+
+    await fireEvent.click(getByTestId('recipe-read-button'))
 
     await waitFor(() => {
       //expect(mockedUsedNavigate).toHaveBeenCalledTimes(1)
@@ -71,7 +177,7 @@ describe('<RecipeList/>', () => {
     const { getByTestId } = render(
       <Router>
         <FirebaseContext.Provider value={firebase}>
-          <RecipeList />
+          <RecipeList target="recipes" />
         </FirebaseContext.Provider>
       </Router>
     )

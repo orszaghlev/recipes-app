@@ -42,20 +42,20 @@ export default function SignIn() {
         : "recipe-create-container"}>
       <h1 className="recipe-create-title">Bejelentkezés</h1>
       <hr className={isTabletOrMobile ? "hr-mobile" : "hr"} />
-      <form data-testid="recipe-form-submit" onSubmit={handleSubmit}
+      <form data-testid="login" onSubmit={handleSubmit}
         className="recipe-form">
-        <div key="input-row-name" className="input-row">
+        <div key="input-email" className="input-row">
           <label>E-mail:</label>
-          <input data-testid="recipe-name" style={{ marginTop: "10px" }}
+          <input data-testid="input-email" style={{ marginTop: "10px" }}
             className={isTabletOrMobile ? "input-name-mobile"
               : "input-name"} type="text" id="name" name="name"
             value={email} onChange={(event) => {
               setEmail(event.target.value)
             }} />
         </div>
-        <div key="input-row-name" className="input-row">
+        <div key="input-password" className="input-row">
           <label>Jelszó:</label>
-          <input data-testid="recipe-name" style={{ marginTop: "10px" }}
+          <input data-testid="input-password" style={{ marginTop: "10px" }}
             className={isTabletOrMobile ? "input-name-mobile"
               : "input-name"} type="password" id="name" name="name"
             value={password} autoComplete="off" onChange={(event) => {

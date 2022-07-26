@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import RecipeEdit from '../components/RecipeEdit'
 import useRecipe from "../hooks/UseRecipe"
 import RecipeFixture from "../fixtures/RecipeFixture"
+import FirebaseContext from '../contexts/FirebaseContext'
 import { Context as ResponsiveContext } from 'react-responsive'
 
 const mockedNavigator = jest.fn()
@@ -19,33 +20,69 @@ describe('<RecipeEdit/>', () => {
   })
 
   it('Megjelenik a szerkesztő űrlap mobilon', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+          doc: jest.fn().mockReturnThis(),
+          set: jest.fn(() => Promise.resolve('Bejegyzés szerkesztve'))
+        }))
+      })),
+      auth: jest.fn(() => ({
+      }))
+    };
     useRecipe.mockImplementation(() => ({ recipe: RecipeFixture }))
 
     render(
       <Router>
-        <ResponsiveContext.Provider value={{ width: 300 }}>
-          <RecipeEdit />
-        </ResponsiveContext.Provider>
+        <FirebaseContext.Provider value={{ firebase }}>
+          <ResponsiveContext.Provider value={{ width: 300 }}>
+            <RecipeEdit />
+          </ResponsiveContext.Provider>
+        </FirebaseContext.Provider>
       </Router>
     )
   })
 
   it('Nem kitölthető a szerkesztő űrlap', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+          doc: jest.fn().mockReturnThis(),
+          set: jest.fn(() => Promise.resolve('Bejegyzés szerkesztve'))
+        }))
+      })),
+      auth: jest.fn(() => ({
+      }))
+    };
     useRecipe.mockImplementation(() => ({ recipe: undefined }))
 
     render(
       <Router>
-        <RecipeEdit />
+        <FirebaseContext.Provider value={{ firebase }}>
+          <RecipeEdit />
+        </FirebaseContext.Provider>
       </Router>
     )
   })
 
   it('Kitölthető a szerkesztő űrlap', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+          doc: jest.fn().mockReturnThis(),
+          set: jest.fn(() => Promise.resolve('Bejegyzés szerkesztve'))
+        }))
+      })),
+      auth: jest.fn(() => ({
+      }))
+    };
     useRecipe.mockImplementation(() => ({ recipe: RecipeFixture }))
 
     const { getByTestId, findByTestId } = render(
       <Router>
-        <RecipeEdit />
+        <FirebaseContext.Provider value={{ firebase }}>
+          <RecipeEdit />
+        </FirebaseContext.Provider>
       </Router>
     )
 
