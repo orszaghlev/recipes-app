@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import RecipeCreate from '../components/RecipeCreate'
 import FirebaseContext from '../contexts/FirebaseContext'
@@ -85,9 +85,5 @@ describe('<RecipeCreate/>', () => {
     fireEvent.click(await findByTestId('recipe-ingredient-add'))
     fireEvent.click(await findByTestId('recipe-step-add'))
     fireEvent.submit(await findByTestId('recipe-form-submit'))
-
-    await waitFor(() => {
-      //expect(mockedNavigator).toHaveBeenCalledWith('/receptek')
-    })
   })
 })

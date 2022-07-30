@@ -66,7 +66,7 @@ export default function SignIn() {
           : "check-button"} type="submit">
           Küldés <FontAwesomeIcon icon={faCheckCircle} />
         </button>
-        <p>{error}</p>
+        <p data-testid="error">{error}</p>
       </form>
     </div>
   )

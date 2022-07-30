@@ -51,20 +51,19 @@ describe('<SignIn/>', () => {
       await fireEvent.change(getByTestId('input-password'), {
         target: { value: 'test1234' }
       });
-      fireEvent.submit(getByTestId('login'));
-    });
+      fireEvent.submit(getByTestId('login'))
+    })
   })
 
   it('Sikertelen bejelentkezés asztali eszközön', async () => {
-    jest.useFakeTimers();
-
-    const failToLogin = jest.fn(() => Promise.reject(new Error('Sikertelen bejelentkezés!')));
+    jest.useFakeTimers()
+    const failToLogin = jest.fn(() => Promise.reject(new Error('Sikertelen bejelentkezés!')))
     const firebase = {
       auth: jest.fn(() => ({
         signInWithEmailAndPassword: failToLogin
       }))
     };
-    const { getByTestId } = render(
+    const { getByTestId, queryByTestId } = render(
       <Router>
         <FirebaseContext.Provider value={{ firebase }}>
           <SignIn />
@@ -79,8 +78,8 @@ describe('<SignIn/>', () => {
       await fireEvent.change(getByTestId('input-password'), {
         target: { value: 'test1234' }
       });
-      fireEvent.submit(getByTestId('login'));
-      jest.advanceTimersByTime(5001);
-    });
+      fireEvent.submit(getByTestId('login'))
+      jest.advanceTimersByTime(5001)
+    })
   })
 })

@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import RecipeEdit from '../components/RecipeEdit'
 import useRecipe from "../hooks/UseRecipe"
@@ -81,7 +81,7 @@ describe('<RecipeEdit/>', () => {
     const { getByTestId, findByTestId } = render(
       <Router>
         <FirebaseContext.Provider value={{ firebase }}>
-          <RecipeEdit />
+          <RecipeEdit target="recipes" />
         </FirebaseContext.Provider>
       </Router>
     )
@@ -112,9 +112,32 @@ describe('<RecipeEdit/>', () => {
     fireEvent.click(await findByTestId('recipe-ingredient-delete-1'))
     fireEvent.click(await findByTestId('recipe-step-delete-1'))
     fireEvent.submit(await findByTestId('recipe-form-submit'))
+  })
 
-    await waitFor(() => {
-      //expect(mockedNavigator).toHaveBeenCalledTimes(1)
+  it('Kitölthető a szerkesztő űrlap a várólistán', async () => {
+    const firebase = {
+      firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+          doc: jest.fn().mockReturnThis(),
+          set: jest.fn(() => Promise.resolve('Bejegyzés szerkesztve'))
+        }))
+      })),
+      auth: jest.fn(() => ({
+      }))
+    };
+    useRecipe.mockImplementation(() => ({ recipe: RecipeFixture }))
+
+    const { getByTestId, findByTestId } = render(
+      <Router>
+        <FirebaseContext.Provider value={{ firebase }}>
+          <RecipeEdit target="backlog" />
+        </FirebaseContext.Provider>
+      </Router>
+    )
+
+    await fireEvent.change(getByTestId('recipe-name'), {
+      target: { value: 'Rostélyos sült' }
     })
+    fireEvent.submit(await findByTestId('recipe-form-submit'))
   })
 })

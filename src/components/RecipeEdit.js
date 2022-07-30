@@ -29,7 +29,7 @@ export default function RecipeEdit({ target }) {
       imageURL: event.target.elements.imageURL.value
     }
     await firebase.firestore().collection(target).doc(data.id).set(data)
-    navigate(ROUTES.RECIPE_LIST)
+    target === "recipes" ? navigate(ROUTES.RECIPE_LIST) : navigate(ROUTES.BACKLOG_LIST)
   }
 
   useEffect(() => {
