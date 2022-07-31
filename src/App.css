@@ -25,7 +25,7 @@ body {
   color: #ffffff;
   font-size: 11px;
   text-indent: -99999em;
-  margin: 55px auto;
+  margin: 25px auto;
   position: relative;
   width: 10em;
   height: 10em;
@@ -92,7 +92,6 @@ body {
 }
 
 .navigation {
-  height: 80px;
   max-width: 100%;
   display: flex;
   flex-direction: row;
@@ -102,15 +101,15 @@ body {
   padding: 0.5rem 0rem;
   background-color: #fff;
   color: grey;
-  background-color: blue;
+  background-color: black;
   box-shadow: 0 2px 2px 2px rgba(9, 9, 9, 0.23);
+  margin-bottom: 20px;
 }
 
 ul {
   list-style-type: none;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
 }
 
@@ -118,9 +117,20 @@ li {
   margin: 10px;
 }
 
+@media (max-width: 640px) {
+  .navigation {
+    text-align: center;
+    flex-direction: column;
+  }
+
+  ul {
+    flex-direction: column;
+  }
+}
+
 .link {
   text-decoration: none;
-  background-color: blue;
+  background-color: transparent;
   border: none;
   cursor: pointer;
   color: white;
@@ -139,7 +149,8 @@ li {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   background-color: gainsboro;
   color: black;
   height: 215px;
@@ -317,8 +328,8 @@ li {
   border: 1px solid grey;
   background-color: white;
   margin: 0 auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .recipe-create-container {
@@ -473,7 +484,11 @@ label {
 }
 
 .input-name,
-.input-name-mobile {
+.input-name-mobile,
+.input-email,
+.input-email-mobile,
+.input-password,
+.input-password-mobile {
   height: 30px;
   border-radius: 5px;
   border: 1px solid gray;
@@ -486,7 +501,15 @@ label {
   margin-bottom: 10px;
 }
 
-.input-name-mobile {
+.input-email,
+.input-password {
+  width: 678px;
+  margin-bottom: 10px;
+}
+
+.input-name-mobile,
+.input-email-mobile,
+.input-password-mobile {
   width: 258px;
   margin: 10px;
 }
@@ -513,4 +536,36 @@ label {
 
 .input-row-img-src-mobile {
   margin-left: 40px;
+}
+
+.error {
+  color: red;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.delete-recipe-delete-button,
+.move-recipe-move-button,
+.delete-recipe-return-button,
+.move-recipe-return-button {
+  color: black;
+  width: 80px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.delete-recipe-delete-button,
+.move-recipe-move-button {
+  margin-right: 10px;
+  color: white;
+}
+
+.delete-recipe-delete-button {
+  background-color: red;
+}
+
+.move-recipe-move-button {
+  background-color: green;
 }

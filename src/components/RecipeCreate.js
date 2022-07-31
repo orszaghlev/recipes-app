@@ -37,7 +37,8 @@ export default function RecipeCreate() {
       steps: steps,
       imageURL: imageURL
     }
-    await firebase.firestore().collection('backlog').doc(data.id).set(data)
+    await firebase.firestore().collection('backlog').doc(data.id)
+      .set(data)
     navigate(ROUTES.RECIPE_LIST)
   }
 

@@ -9,7 +9,7 @@ const mockedNavigator = jest.fn()
 jest.mock("react-router-dom", () => ({
   ...(jest.requireActual("react-router-dom")),
   useNavigate: () => mockedNavigator,
-}));
+}))
 
 describe('<RecipeCreate/>', () => {
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('<RecipeCreate/>', () => {
       })),
       auth: jest.fn(() => ({
       }))
-    };
+    }
 
     render(
       <Router>
@@ -49,7 +49,7 @@ describe('<RecipeCreate/>', () => {
       })),
       auth: jest.fn(() => ({
       }))
-    };
+    }
 
     const { getByTestId, findByTestId } = render(
       <Router>

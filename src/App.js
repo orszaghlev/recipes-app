@@ -11,7 +11,7 @@ import * as ROUTES from './constants/Routes'
 import useAuthListener from './hooks/UseAuthListener'
 import AdminContext from './contexts/AdminContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOut } from '@fortawesome/free-solid-svg-icons'
+import { faSignIn, faSignOut } from '@fortawesome/free-solid-svg-icons'
 import { firebase } from "./lib/Firebase"
 
 function App() {
@@ -52,14 +52,28 @@ function App() {
                   <button className="link">Új recept</button>
                 </Link>
               </li>
+            </ul>
+            <ul>
               {admin &&
                 <>
-                  <Link to={ROUTES.BACKLOG_LIST}>
-                    <button className="link">Várólista</button>
-                  </Link>
+                  <li>
+                    <Link to={ROUTES.BACKLOG_LIST}>
+                      <button className="link">Várólista</button>
+                    </Link>
+                  </li>
                   <li>
                     <FontAwesomeIcon onClick={signOut}
                       style={{ color: "white" }} icon={faSignOut} />
+                  </li>
+                </>
+              }
+              {!admin &&
+                <>
+                  <li>
+                    <Link to={ROUTES.BACKLOG_LIST}>
+                      <FontAwesomeIcon
+                        style={{ color: "white" }} icon={faSignIn} />
+                    </Link>
                   </li>
                 </>
               }
@@ -68,13 +82,19 @@ function App() {
           <Routes>
             <Route path={ROUTES.RECIPE_CREATE} element={<RecipeCreate />} />
             <Route element={<ProtectedRoute admin={admin} />}>
-              <Route path={ROUTES.RECIPE_EDIT} element={<RecipeEdit target="recipes" />} />
-              <Route path={ROUTES.BACKLOG_EDIT} element={<RecipeEdit target="backlog" />} />
-              <Route path={ROUTES.BACKLOG_SINGLE} element={<RecipeSingle target="backlog" />} />
-              <Route path={ROUTES.BACKLOG_LIST} element={<RecipeList target="backlog" admin={admin} />} />
+              <Route path={ROUTES.RECIPE_EDIT}
+                element={<RecipeEdit target="recipes" />} />
+              <Route path={ROUTES.BACKLOG_EDIT}
+                element={<RecipeEdit target="backlog" />} />
+              <Route path={ROUTES.BACKLOG_SINGLE}
+                element={<RecipeSingle target="backlog" />} />
+              <Route path={ROUTES.BACKLOG_LIST}
+                element={<RecipeList target="backlog" admin={admin} />} />
             </Route>
-            <Route path={ROUTES.RECIPE_SINGLE} element={<RecipeSingle target="recipes" />} />
-            <Route path={ROUTES.RECIPE_LIST} element={<RecipeList target="recipes" admin={admin} />} />
+            <Route path={ROUTES.RECIPE_SINGLE}
+              element={<RecipeSingle target="recipes" />} />
+            <Route path={ROUTES.RECIPE_LIST}
+              element={<RecipeList target="recipes" admin={admin} />} />
             <Route path={ROUTES.HOME} element={<Home />} />
             <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
           </Routes>

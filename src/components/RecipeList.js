@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRemove, faEye, faPen, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faRemove, faEye, faPen, faCheck }
+  from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom"
 import { useState, useEffect, useContext } from 'react'
+import { useMediaQuery } from "react-responsive"
 import FirebaseContext from '../contexts/FirebaseContext'
 import useRecipes from "../hooks/UseRecipes"
 import Modal from 'react-modal'
@@ -15,6 +17,7 @@ export default function RecipeList({ target, admin }) {
   const [isOpenForDelete, setIsOpenForDelete] = useState(false)
   const [isOpenForMove, setIsOpenForMove] = useState(false)
   const [currentRecipe, setCurrentRecipe] = useState({})
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 500 })
   const customStyles = {
     content: {
       top: '50%',
@@ -23,8 +26,7 @@ export default function RecipeList({ target, admin }) {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      height: '200px',
-      width: '600px'
+      width: isTabletOrMobile ? '250px' : '500px',
     },
   }
 
@@ -69,8 +71,10 @@ export default function RecipeList({ target, admin }) {
       steps: recipe.steps,
       imageURL: recipe.imageURL
     }
-    await firebase.firestore().collection("recipes").doc(recipe.id).set(data)
-    await firebase.firestore().collection("backlog").doc(recipe.id).delete()
+    await firebase.firestore().collection("recipes").doc(recipe.id)
+      .set(data)
+    await firebase.firestore().collection("backlog").doc(recipe.id)
+      .delete()
     closeModalForMove()
     navigate(ROUTES.HOME)
   }
@@ -83,8 +87,7 @@ export default function RecipeList({ target, admin }) {
     <>
       {recipes.length === 0 && <Spinner />}
       {recipes.length !== 0 && <h2 style={{
-        display: "flex", justifyContent: "center",
-        marginTop: "10px", fontSize: "32px"
+        display: "flex", justifyContent: "center", fontSize: "32px"
       }}>{document.title}</h2>}
       <div key="recipes-container" className="recipes-container">
         {recipes.map((recipe) => {
@@ -107,12 +110,17 @@ export default function RecipeList({ target, admin }) {
                           isOpen={isOpenForMove}
                           onRequestClose={closeModalForMove}
                           style={customStyles}
+                          ariaHideApp={false}
                           contentLabel="Recept publikálása"
                         >
-                          <h2>Biztosan publikálni szeretné a(z) "{currentRecipe.name}" receptet?</h2>
-                          <button className="delete-recipe-delete-button" data-testid="move-recipe-move-button"
-                            onClick={() => handleMove(currentRecipe)}>Publikálás</button>
-                          <button className="delete-recipe-return-button" data-testid="move-recipe-return-button"
+                          <h2>Biztosan publikálni szeretné a(z)
+                            "{currentRecipe.name}" receptet?</h2>
+                          <button className="move-recipe-move-button"
+                            data-testid="move-recipe-move-button"
+                            onClick={() => handleMove(currentRecipe)}>
+                            Publikálás</button>
+                          <button className="move-recipe-return-button"
+                            data-testid="move-recipe-return-button"
                             onClick={closeModalForMove}>Vissza</button>
                         </Modal>
                       </>
@@ -120,7 +128,8 @@ export default function RecipeList({ target, admin }) {
                     <button data-testid="recipe-edit-button"
                       className="recipe-edit-button"
                       onClick={() =>
-                        navigate(target === "recipes" ? `/recept-szerkesztes/${recipe.id}`
+                        navigate(target === "recipes"
+                          ? `/recept-szerkesztes/${recipe.id}`
                           : `/varolista/recept-szerkesztes/${recipe.id}`,
                           { state: { id: recipe.id } })}>
                       <FontAwesomeIcon icon={faPen} />
@@ -134,19 +143,25 @@ export default function RecipeList({ target, admin }) {
                       isOpen={isOpenForDelete}
                       onRequestClose={closeModalForDelete}
                       style={customStyles}
+                      ariaHideApp={false}
                       contentLabel="Recept törlése"
                     >
-                      <h2>Biztosan törölni szeretné a(z) "{currentRecipe.name}" receptet?</h2>
-                      <button className="delete-recipe-delete-button" data-testid="delete-recipe-delete-button"
-                        onClick={() => deleteRecipe(currentRecipe.id)}>Törlés</button>
-                      <button className="delete-recipe-return-button" data-testid="delete-recipe-return-button"
+                      <h2>Biztosan törölni szeretné a(z)
+                        "{currentRecipe.name}" receptet?</h2>
+                      <button className="delete-recipe-delete-button"
+                        data-testid="delete-recipe-delete-button"
+                        onClick={() => deleteRecipe(currentRecipe.id)}>
+                        Törlés</button>
+                      <button className="delete-recipe-return-button"
+                        data-testid="delete-recipe-return-button"
                         onClick={closeModalForDelete}>Vissza</button>
                     </Modal>
                   </>
                 }
                 <button data-testid="recipe-read-button"
                   className="recipe-read-button"
-                  onClick={() => navigate(target === "recipes" ? `/recept/${recipe.id}`
+                  onClick={() => navigate(target === "recipes"
+                    ? `/recept/${recipe.id}`
                     : `/varolista/recept/${recipe.id}`,
                     { state: { id: recipe.id } })}>
                   <FontAwesomeIcon icon={faEye} />

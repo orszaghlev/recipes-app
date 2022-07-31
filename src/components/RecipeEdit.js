@@ -29,7 +29,8 @@ export default function RecipeEdit({ target }) {
       imageURL: event.target.elements.imageURL.value
     }
     await firebase.firestore().collection(target).doc(data.id).set(data)
-    target === "recipes" ? navigate(ROUTES.RECIPE_LIST) : navigate(ROUTES.BACKLOG_LIST)
+    target === "recipes" ? navigate(ROUTES.RECIPE_LIST)
+      : navigate(ROUTES.BACKLOG_LIST)
   }
 
   useEffect(() => {
@@ -43,7 +44,8 @@ export default function RecipeEdit({ target }) {
   return (
     <>
       {typeof recipe === "undefined" && <Spinner />}
-      {typeof recipe !== "undefined" && typeof ingredients !== "undefined" && typeof steps !== "undefined" &&
+      {typeof recipe !== "undefined" && typeof ingredients !== "undefined"
+        && typeof steps !== "undefined" &&
         <>
           <div key={isTabletOrMobile ? "recipe-create-container-mobile"
             : "recipe-create-container"}
@@ -178,7 +180,8 @@ export default function RecipeEdit({ target }) {
                       data-testid={"recipe-step-timer-" + i}
                       style={isTabletOrMobile ? { width: "52.5px" }
                         : { width: "100px" }} placeholder="Idő"
-                      defaultValue={step.timer} className="input-ingredient"
+                      defaultValue={step.timer}
+                      className="input-ingredient"
                       type="number" id={"steps-timer-" + i}
                       name={"steps-timer-" + i} onChange={(event) => {
                         event.persist()
@@ -223,7 +226,8 @@ export default function RecipeEdit({ target }) {
                   style={{ marginTop: "10px" }}
                   className={isTabletOrMobile ? "input-name-mobile"
                     : "input-name"} type="text"
-                  id="imageURL" name="imageURL" defaultValue={recipe.imageURL} />
+                  id="imageURL" name="imageURL"
+                  defaultValue={recipe.imageURL} />
                 <img className={isTabletOrMobile
                   ? "input-row-img-src-mobile" : "input-row-img-src"}
                   src={recipe.imageURL} alt={recipe.name}

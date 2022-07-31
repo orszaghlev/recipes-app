@@ -16,7 +16,7 @@ export default function SignIn() {
 
   async function handleSubmit(event) {
     event.preventDefault()
-    firebase.auth()
+    await firebase.auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         navigate(ROUTES.BACKLOG_LIST)
@@ -47,18 +47,19 @@ export default function SignIn() {
         <div key="input-email" className="input-row">
           <label>E-mail:</label>
           <input data-testid="input-email" style={{ marginTop: "10px" }}
-            className={isTabletOrMobile ? "input-name-mobile"
-              : "input-name"} type="text" id="name" name="name"
+            className={isTabletOrMobile ? "input-email-mobile"
+              : "input-email"} type="text" id="name" name="name"
             value={email} onChange={(event) => {
               setEmail(event.target.value)
             }} />
         </div>
         <div key="input-password" className="input-row">
           <label>Jelszó:</label>
-          <input data-testid="input-password" style={{ marginTop: "10px" }}
-            className={isTabletOrMobile ? "input-name-mobile"
-              : "input-name"} type="password" id="name" name="name"
-            value={password} autoComplete="off" onChange={(event) => {
+          <input data-testid="input-password"
+            style={{ marginTop: "10px" }} className={isTabletOrMobile
+              ? "input-password-mobile" : "input-password"}
+            type="password" id="name" name="name" value={password}
+            autoComplete="off" onChange={(event) => {
               setPassword(event.target.value)
             }} />
         </div>
@@ -66,7 +67,7 @@ export default function SignIn() {
           : "check-button"} type="submit">
           Küldés <FontAwesomeIcon icon={faCheckCircle} />
         </button>
-        <p data-testid="error">{error}</p>
+        <p className="error" data-testid="error">{error}</p>
       </form>
     </div>
   )

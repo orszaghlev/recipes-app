@@ -32,8 +32,9 @@ export default function RecipeSingle({ target }) {
                 <ul className="ingredients">
                   {recipe.ingredients.map((ingredient) => {
                     return (
-                      <li key={ingredient.name} className={isTabletOrMobile
-                        ? "ingredient-mobile" : "ingredient"}>
+                      <li key={ingredient.name}
+                        className={isTabletOrMobile
+                          ? "ingredient-mobile" : "ingredient"}>
                         {ingredient.name} ({ingredient.quantity})
                       </li>
                     )

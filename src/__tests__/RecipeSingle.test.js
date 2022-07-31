@@ -46,16 +46,17 @@ describe('<RecipeSingle/>', () => {
     )
   })
 
-  it('Nem jelennek meg a hozzávalók és az elkészítés lépései', async () => {
-    useRecipe.mockImplementation(() => ({
-      recipe:
-        RecipeWithNoIngredientsAndStepsFixture
-    }))
+  it('Nem jelennek meg a hozzávalók és az elkészítés lépései',
+    async () => {
+      useRecipe.mockImplementation(() => ({
+        recipe:
+          RecipeWithNoIngredientsAndStepsFixture
+      }))
 
-    render(
-      <Router>
-        <RecipeSingle />
-      </Router>
-    )
-  })
+      render(
+        <Router>
+          <RecipeSingle />
+        </Router>
+      )
+    })
 })

@@ -29,7 +29,7 @@ describe('<RecipeEdit/>', () => {
       })),
       auth: jest.fn(() => ({
       }))
-    };
+    }
     useRecipe.mockImplementation(() => ({ recipe: RecipeFixture }))
 
     render(
@@ -53,7 +53,7 @@ describe('<RecipeEdit/>', () => {
       })),
       auth: jest.fn(() => ({
       }))
-    };
+    }
     useRecipe.mockImplementation(() => ({ recipe: undefined }))
 
     render(
@@ -75,7 +75,7 @@ describe('<RecipeEdit/>', () => {
       })),
       auth: jest.fn(() => ({
       }))
-    };
+    }
     useRecipe.mockImplementation(() => ({ recipe: RecipeFixture }))
 
     const { getByTestId, findByTestId } = render(
@@ -102,7 +102,7 @@ describe('<RecipeEdit/>', () => {
       target: { value: "Helyezzük a marhapörköltet a cserépbe." }
     })
     await fireEvent.change(getByTestId('recipe-step-timer-1'), {
-      target: { value: 0 }
+      target: { value: 1 }
     })
     await fireEvent.change(getByTestId('recipe-imageURL'), {
       target: { value: "picVfzLZo.jpg" }
@@ -124,7 +124,7 @@ describe('<RecipeEdit/>', () => {
       })),
       auth: jest.fn(() => ({
       }))
-    };
+    }
     useRecipe.mockImplementation(() => ({ recipe: RecipeFixture }))
 
     const { getByTestId, findByTestId } = render(
