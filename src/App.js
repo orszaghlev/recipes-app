@@ -70,7 +70,7 @@ function App() {
               {!admin &&
                 <>
                   <li>
-                    <Link to={ROUTES.BACKLOG_LIST}>
+                    <Link to={ROUTES.SIGN_IN}>
                       <FontAwesomeIcon
                         style={{ color: "white" }} icon={faSignIn} />
                     </Link>

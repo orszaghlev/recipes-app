@@ -1,5 +1,6 @@
 # recipes-app
 A single page app, which lets you read and upload recipes in Hungarian. The recipes that were created by users of this app will be stored in the backlog first. The admin can edit, delete or publish your recipes, the published recipes will become available for reading for all users.
+The initial idea and database came from an exercise I found on [Kódbázis](https://kodbazis.hu).
 
 ## Deploy
 
